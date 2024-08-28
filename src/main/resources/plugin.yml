@@ -1,0 +1,7 @@
+name: SafeHaven
+version: '0.01-ALPHA'
+main: oi.yeetaaron1.org.SafeHaven
+api-version: '1.21'
+authors: [ yeetaaron1 ]
+description: Safe haven for your friends :)
+website: https://github.com/yeetaaron1/SafeHaven
