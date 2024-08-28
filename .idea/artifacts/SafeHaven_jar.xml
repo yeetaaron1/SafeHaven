@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SafeHaven:jar">
+    <output-path>$PROJECT_DIR$/..</output-path>
+    <root id="archive" name="SafeHaven.jar">
+      <element id="module-output" name="SafeHaven" />
+    </root>
+  </artifact>
+</component>
