@@ -66,4 +66,8 @@ public class ConfigUtil {
     public String getSQLiteFile() {
         return config.getString("database.sqlite.file", "database.db");
     }
+
+    public File getDataFolder() {
+        return plugin.getDataFolder();
+    }
 }

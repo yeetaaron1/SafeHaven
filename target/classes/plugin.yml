@@ -1,5 +1,5 @@
 name: SafeHaven
-version: '0.01-ALPHA'
+version: '0.02-ALPHA'
 main: oi.yeetaaron1.org.SafeHaven
 api-version: '1.21'
 authors: [ yeetaaron1 ]
@@ -9,7 +9,7 @@ website: https://github.com/yeetaaron1/SafeHaven
 
 
 commands:
-  reloadconfig:
+  safehaven:
     description: Reloads the plugin configuration
-    usage: /<command>
-    permission: safehaven.reload
+    usage: /safehaven <admin_command>
+    permission: safehaven.admin

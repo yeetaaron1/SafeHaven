@@ -9,7 +9,27 @@ website: https://github.com/yeetaaron1/SafeHaven
 
 
 commands:
-  shreload:
+  safehaven:
     description: Reloads the plugin configuration
-    usage: /shreload
-    permission: safehaven.reload
+    usage: /safehaven <admin_command>
+    permission: safehaven.admin
+
+
+
+
+permissions:
+  safehaven.sethome:
+    description: Allows the player to set homes.
+    default: true
+
+  safehaven.home:
+    description: Allows the player to teleport to homes.
+    default: true
+
+  safehaven.delhome:
+    description: Allows the player to delete homes.
+    default: true
+
+  safehaven.homes:
+    description: Allows the player to list their homes.
+    default: true

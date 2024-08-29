@@ -1,6 +1,6 @@
 package oi.yeetaaron1.org.Managers;
 
-import oi.yeetaaron1.org.Commands.Admin.ReloadCommand;
+import oi.yeetaaron1.org.Commands.Admin.CommandExecutor.SafeHavenCommand;
 import oi.yeetaaron1.org.SafeHaven;
 
 public class CommandManager {
@@ -13,7 +13,7 @@ public class CommandManager {
     }
 
     private void registerCommands() {
-        plugin.getCommand("shreload").setExecutor(new ReloadCommand(plugin));
+        plugin.getCommand("safehaven").setExecutor(new SafeHavenCommand(plugin));
 
         // You can add more commands here as needed
         // Example:
