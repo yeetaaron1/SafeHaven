@@ -1,5 +1,5 @@
 name: SafeHaven
-version: '0.02-ALPHA'
+version: '0.04-ALPHA'
 main: oi.yeetaaron1.org.SafeHaven
 api-version: '1.21'
 authors: [ yeetaaron1 ]
@@ -13,3 +13,44 @@ commands:
     description: Reloads the plugin configuration
     usage: /safehaven <admin_command>
     permission: safehaven.admin
+
+  sethome:
+    description: Allows the player to set homes.
+    usage: /sethome <name>
+    permission: safehaven.sethome
+  delhome:
+    description: Allows the player to delete homes.
+    usage: /safehaven <admin_command>
+    permission: safehaven.delhome
+  home:
+    description: Allows the player to teleport to homes.
+    usage: /home <name>
+    permission: safehaven.home
+  homes:
+    description: Allows the player to list their homes.
+    usage: /homes
+    permission: safehaven.homes
+  homegui:
+    description: Opens the home management GUI
+    usage: /<command>
+    permission: safehaven.gui
+
+
+
+
+permissions:
+  safehaven.sethome:
+    description: Allows the player to set homes.
+    default: true
+
+  safehaven.home:
+    description: Allows the player to teleport to homes.
+    default: true
+
+  safehaven.delhome:
+    description: Allows the player to delete homes.
+    default: true
+
+  safehaven.homes:
+    description: Allows the player to list their homes.
+    default: true

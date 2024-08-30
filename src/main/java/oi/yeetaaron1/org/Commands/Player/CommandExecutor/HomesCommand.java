@@ -7,7 +7,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class HomesCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (!(commandSender instanceof Player)) {
             commandSender.sendMessage("This command can only be used by players.");
             return true;
@@ -39,7 +38,7 @@ public class HomesCommand implements CommandExecutor {
             return true;
         }
 
-        List<String> homes = /*homeSystem.getHomeStorage().getHomes(player.getUniqueId());*/
+        List<String> homes = homeSystem.getHomes(player);
 
         if (homes.isEmpty()) {
             player.sendMessage("You have no homes set.");

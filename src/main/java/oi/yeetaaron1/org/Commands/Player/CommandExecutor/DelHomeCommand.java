@@ -7,7 +7,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 public class DelHomeCommand implements CommandExecutor {
 
@@ -22,7 +21,7 @@ public class DelHomeCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (!(commandSender instanceof Player)) {
             commandSender.sendMessage("This command can only be used by players.");
             return true;
@@ -43,7 +42,7 @@ public class DelHomeCommand implements CommandExecutor {
 
         String homeName = strings[0];
 
-        if (/*homeSystem.getHomeStorage().deleteHome(player.getUniqueId(), homeName*/)) {
+        if (homeSystem.deleteHome(player, homeName)) {
             player.sendMessage("Home '" + homeName + "' has been deleted!");
             loggerUtil.logInfo("Home '" + homeName + "' deleted for player '" + player.getName() + "'.");
         } else {

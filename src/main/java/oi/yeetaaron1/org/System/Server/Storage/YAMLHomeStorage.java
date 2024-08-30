@@ -4,7 +4,6 @@ import oi.yeetaaron1.org.SafeHaven;
 import oi.yeetaaron1.org.Utils.LoggerUtil;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +21,7 @@ public class YAMLHomeStorage implements HomeStorage{
     public YAMLHomeStorage(SafeHaven plugin, File playerDataFolder){
         this.plugin = plugin;
         this.playerDataFolder = playerDataFolder;
-        this.loggerUtil = new LoggerUtil(plugin);
+        this.loggerUtil = SafeHaven.getLoggerUtil();
 
         if(!playerDataFolder.exists()){
             playerDataFolder.mkdirs();
@@ -99,5 +98,19 @@ public class YAMLHomeStorage implements HomeStorage{
         YamlConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
         Set<String> homeKeys = playerData.getConfigurationSection("homes").getKeys(false);
         return new ArrayList<>(homeKeys);
+    }
+
+    @Override
+    public int getHomeCount(UUID uuid) {
+        File playerFile = new File(playerDataFolder, uuid.toString() + ".yml");
+        if (!playerFile.exists()) {
+            return 0;
+        }
+        YamlConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
+        if (!playerData.contains("homes")) {
+            return 0;
+        }
+        Set<String> homeKeys = playerData.getConfigurationSection("homes").getKeys(false);
+        return homeKeys.size();
     }
 }

@@ -18,27 +18,10 @@ public class SqliteHomeStorage implements HomeStorage {
     private final DatabaseUtil databaseUtil;
     private final LoggerUtil loggerUtil;
 
-    public SqliteHomeStorage(SafeHaven plugin, DatabaseUtil databaseUtil){
+    public SqliteHomeStorage(SafeHaven plugin){
         this.plugin = plugin;
-        this.databaseUtil = databaseUtil;
-        this.loggerUtil = new LoggerUtil(plugin);
-
-        setupSQLiteTable();
-    }
-
-    private void setupSQLiteTable(){
-        String createTableSQL = "CREATE TABLE IF NOT EXISTS player_homes (" +
-                "uuid TEXT NOT NULL," +
-                "home_name TEXT NOT NULL," +
-                "x REAL NOT NULL," +
-                "y REAL NOT NULL," +
-                "z REAL NOT NULL," +
-                "yaw REAL NOT NULL," +
-                "pitch REAL NOT NULL," +
-                "PRIMARY KEY (uuid, home_name)" +
-                ");";
-        databaseUtil.executeUpdate(createTableSQL);
-        loggerUtil.logInfo("SQLite table for player homes has been set up.");
+        this.databaseUtil = SafeHaven.getDatabaseUtil();
+        this.loggerUtil = SafeHaven.getLoggerUtil();
     }
 
     @Override
@@ -116,5 +99,20 @@ public class SqliteHomeStorage implements HomeStorage {
             loggerUtil.logError("Failed to retrieve homes from SQlite for player '%s': %s".formatted(uuid, e.getMessage()));
         }
         return homeNames;
+    }
+
+    @Override
+    public int getHomeCount(UUID uuid) {
+        String sql = "SELECT COUNT(*) FROM player_homes WHERE uuid=?";
+        try (PreparedStatement statement = databaseUtil.getConnection().prepareStatement(sql)) {
+            statement.setString(1, uuid.toString());
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            loggerUtil.logError("Failed to retrieve home count from SQLite for player '%s': %s".formatted(uuid, e.getMessage()));
+        }
+        return 0;
     }
 }

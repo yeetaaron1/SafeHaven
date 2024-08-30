@@ -5,7 +5,6 @@ import oi.yeetaaron1.org.Utils.DatabaseUtil;
 import oi.yeetaaron1.org.Utils.LoggerUtil;
 import org.bukkit.Location;
 
-import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,28 +18,17 @@ public class MySQLHomeStorage implements HomeStorage {
     private final DatabaseUtil databaseUtil;
     private final LoggerUtil loggerUtil;
 
-    public MySQLHomeStorage(SafeHaven plugin, DatabaseUtil databaseUtil){
+    public MySQLHomeStorage(SafeHaven plugin){
         this.plugin = plugin;
-        this.databaseUtil = databaseUtil;
-        this.loggerUtil = new LoggerUtil(plugin);
+        this.databaseUtil = SafeHaven.getDatabaseUtil();
+        this.loggerUtil = SafeHaven.getLoggerUtil();
 
-        setupMySQLTable();
-    }
-
-    private void setupMySQLTable(){
-        String createTableSQL = "CREATE TABLE IF NOT EXISTS player_homes (" +
-                "uuid VARCHAR(36) NOT NULL," +
-                "home_name VARCHAR(50) NOT NULL," +
-                "world VARCHAR(50) NOT NULL," +
-                "x DOUBLE NOT NULL," +
-                "y DOUBLE NOT NULL," +
-                "z DOUBLE NOT NULL," +
-                "yaw FLOAT NOT NULL," +
-                "pitch FLOAT NOT NULL," +
-                "PRIMARY KEY (uuid, home_name)," +
-                ");";
-        databaseUtil.executeUpdate(createTableSQL);
-        loggerUtil.logInfo("MySQL table for player homes has been set up.");
+        if (this.databaseUtil == null) {
+            throw new IllegalStateException("DatabaseUtil is not initialized.");
+        }
+        if (this.loggerUtil == null) {
+            throw new IllegalStateException("LoggerUtil is not initialized.");
+        }
     }
 
     @Override
@@ -118,5 +106,20 @@ public class MySQLHomeStorage implements HomeStorage {
             loggerUtil.logError("Failed to retrieve homes from MySQL for player '%s': %s".formatted(uuid, e.getMessage()));
         }
         return homeNames;
+    }
+
+    @Override
+    public int getHomeCount(UUID uuid) {
+        String sql = "SELECT COUNT(*) FROM player_homes WHERE uuid=?";
+        try (PreparedStatement statement = databaseUtil.getConnection().prepareStatement(sql)) {
+            statement.setString(1, uuid.toString());
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            loggerUtil.logError("Failed to retrieve home count from MySQL for player '%s': %s".formatted(uuid, e.getMessage()));
+        }
+        return 0;
     }
 }

@@ -10,4 +10,5 @@ public interface HomeStorage {
     Location getHome(UUID uuid, String homeName);
     boolean deleteHome(UUID uuid, String homeName);
     List<String> getHomes(UUID uuid);
+    int getHomeCount(UUID uuid);
 }

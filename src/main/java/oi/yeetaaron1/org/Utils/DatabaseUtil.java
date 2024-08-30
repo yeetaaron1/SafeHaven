@@ -49,6 +49,38 @@ public class DatabaseUtil {
         return connection;
     }
 
+    public void setupMySQLTable() {
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS player_homes (" +
+                "uuid VARCHAR(36) NOT NULL," +
+                "home_name VARCHAR(50) NOT NULL," +
+                "world VARCHAR(50) NOT NULL," +
+                "x DOUBLE NOT NULL," +
+                "y DOUBLE NOT NULL," +
+                "z DOUBLE NOT NULL," +
+                "yaw FLOAT NOT NULL," +
+                "pitch FLOAT NOT NULL," +
+                "PRIMARY KEY (uuid, home_name)" +
+                ");";
+        executeUpdate(createTableSQL);
+        loggerUtil.logInfo("MySQL table for player homes has been set up.");
+    }
+
+    public void setupSQLiteTable() {
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS player_homes (" +
+                "uuid TEXT NOT NULL," +
+                "home_name TEXT NOT NULL," +
+                "world TEXT NOT NULL," +
+                "x REAL NOT NULL," +
+                "y REAL NOT NULL," +
+                "z REAL NOT NULL," +
+                "yaw REAL NOT NULL," +
+                "pitch REAL NOT NULL," +
+                "PRIMARY KEY (uuid, home_name)" +
+                ");";
+        executeUpdate(createTableSQL);
+        loggerUtil.logInfo("SQLite table for player homes has been set up.");
+    }
+
     public void executeUpdate(String sql) {
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);

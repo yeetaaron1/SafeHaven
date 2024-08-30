@@ -12,7 +12,7 @@ public class ConfigUtil {
 
     private final SafeHaven plugin;
     private FileConfiguration config;
-    private File configFile;
+    private final File configFile;
 
     public ConfigUtil(SafeHaven plugin) {
         this.plugin = plugin;
@@ -43,6 +43,7 @@ public class ConfigUtil {
         }
     }
 
+    // Getter methods for home system settings
     public int getMaxHomes() {
         return config.getInt("home-system.max-homes", 10); // Default to 10 if not set
     }
@@ -51,6 +52,7 @@ public class ConfigUtil {
         return config.getString("home-system.storage-method", "YAML"); // Default to YAML if not set
     }
 
+    // Getter methods for MySQL settings
     public String getMySQLUrl() {
         return config.getString("database.mysql.url", "jdbc:mysql://localhost:3306/your_database");
     }
@@ -63,11 +65,27 @@ public class ConfigUtil {
         return config.getString("database.mysql.password", "your_password");
     }
 
+    // Getter method for SQLite settings
     public String getSQLiteFile() {
         return config.getString("database.sqlite.file", "database.db");
     }
 
+    // Getter methods for MongoDB settings
+    public String getMongoDBUri() {
+        return config.getString("database.mongodb.uri", "mongodb://localhost:27017");
+    }
+
+    public String getMongoDBName() {
+        return config.getString("database.mongodb.name", "your_database");
+    }
+
+    // Method to get the plugin's data folder
     public File getDataFolder() {
         return plugin.getDataFolder();
+    }
+
+    // Method to get the config file's path as a string
+    public String getConfigFilePath() {
+        return configFile.getPath();
     }
 }
