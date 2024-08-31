@@ -11,16 +11,12 @@ import org.bukkit.entity.Player;
 
 public class SetHomeCommand implements CommandExecutor {
 
-    private final SafeHaven plugin;
     private final HomeSystem homeSystem;
-    private final LoggerUtil loggerUtil;
     private final int maxHomes;
 
     public SetHomeCommand(SafeHaven plugin, HomeSystem homeSystem) {
-        this.plugin = plugin;
         this.homeSystem = homeSystem;
-        this.loggerUtil = plugin.getLoggerUtil();
-        this.maxHomes = plugin.getConfigUtil().getMaxHomes(); // Retrieve max homes from config
+        this.maxHomes = SafeHaven.getConfigUtil().getMaxHomes(); // Retrieve max homes from config
     }
 
     @Override
@@ -43,18 +39,14 @@ public class SetHomeCommand implements CommandExecutor {
             player.sendMessage("Usage: /sethome [home_name]");
             return true;
         }
-
-        // Check if the player has reached the maximum number of homes
         int homeCount = homeSystem.getHomeCount(player);
         if (homeCount >= maxHomes) {
             player.sendMessage("You have reached the maximum number of homes (" + maxHomes + ").");
             return true;
         }
-
         Location location = player.getLocation();
         homeSystem.saveHome(player, homeName, location);
         player.sendMessage("Home '" + homeName + "' has been set!");
-        loggerUtil.logInfo("Home '" + homeName + "' set for player '" + player.getName() + "'.");
         return true;
     }
 }

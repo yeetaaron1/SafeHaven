@@ -25,7 +25,7 @@ public class CommandManager {
         Objects.requireNonNull(plugin.getCommand("delhome")).setExecutor(new DelHomeCommand(plugin, homeSystem));
         Objects.requireNonNull(plugin.getCommand("home")).setExecutor(new HomeCommand(plugin, homeSystem));
         Objects.requireNonNull(plugin.getCommand("homes")).setExecutor(new HomesCommand(plugin, homeSystem));
-        Objects.requireNonNull(plugin.getCommand("homegui")).setExecutor(new HomeGuiCommand(homeSystem));
+        Objects.requireNonNull(plugin.getCommand("homegui")).setExecutor(new HomeGuiCommand());
 
 
         Objects.requireNonNull(plugin.getCommand("sethome")).setTabCompleter(new SetHomeCompleter());

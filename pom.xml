@@ -6,7 +6,7 @@
 
     <groupId>oi.yeetaaron1</groupId>
     <artifactId>SafeHaven</artifactId>
-    <version>0.04-ALPHA</version>
+    <version>0.05-ALPHA</version>
     <packaging>jar</packaging>
 
     <name>SafeHaven</name>

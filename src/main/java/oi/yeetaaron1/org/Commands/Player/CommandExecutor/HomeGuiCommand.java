@@ -1,7 +1,6 @@
 package oi.yeetaaron1.org.Commands.Player.CommandExecutor;
 
-import oi.yeetaaron1.org.System.Menu.GuiSets.PlayerGuiMenu;
-import oi.yeetaaron1.org.System.Server.HomeSystem;
+import oi.yeetaaron1.org.System.Menu.Gui.Player.HomeMenu;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,10 +8,10 @@ import org.bukkit.entity.Player;
 
 public class HomeGuiCommand implements CommandExecutor {
 
-    private final PlayerGuiMenu playerGuiMenu;
+    private final HomeMenu guiMenu;
 
-    public HomeGuiCommand(HomeSystem homeSystem) {
-        this.playerGuiMenu = new PlayerGuiMenu(homeSystem);
+    public HomeGuiCommand() {
+        this.guiMenu = new HomeMenu();
     }
 
     @Override
@@ -23,7 +22,7 @@ public class HomeGuiCommand implements CommandExecutor {
                 player.sendMessage("You do not have permission to use this command.");
                 return true;
             }
-            playerGuiMenu.open(player);
+            guiMenu.open(player);
             return true;
         } else {
             sender.sendMessage("This command can only be used by players.");

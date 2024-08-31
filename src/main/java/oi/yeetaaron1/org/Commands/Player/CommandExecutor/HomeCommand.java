@@ -2,6 +2,7 @@ package oi.yeetaaron1.org.Commands.Player.CommandExecutor;
 
 import oi.yeetaaron1.org.SafeHaven;
 import oi.yeetaaron1.org.System.Server.HomeSystem;
+import oi.yeetaaron1.org.System.Server.TeleportSystem;
 import oi.yeetaaron1.org.Utils.LoggerUtil;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -13,18 +14,16 @@ import java.util.List;
 
 public class HomeCommand implements CommandExecutor {
 
-    private final SafeHaven plugin;
     private final HomeSystem homeSystem;
-    private final LoggerUtil loggerUtil;
+    private final TeleportSystem teleportSystem;
 
     public HomeCommand(SafeHaven plugin, HomeSystem homeSystem) {
-        this.plugin = plugin;
         this.homeSystem = homeSystem;
-        this.loggerUtil = new LoggerUtil(plugin);
+        this.teleportSystem = new TeleportSystem(plugin, homeSystem);
     }
 
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
         if (!(commandSender instanceof Player)) {
             commandSender.sendMessage("This command can only be used by players.");
             return true;
@@ -34,12 +33,11 @@ public class HomeCommand implements CommandExecutor {
             player.sendMessage("You do not have permission to use this command.");
             return true;
         }
-        if (strings.length > 1) {
+        if (args.length > 1) {
             player.sendMessage("Usage: /home [home_name]");
             return true;
         }
-        String homeName = strings.length == 1 ? strings[0] : null;
-        Location location;
+        String homeName = args.length == 1 ? args[0] : null;
         if (homeName == null) {
             List<String> homes = homeSystem.getHomes(player);
             if (homes.isEmpty()) {
@@ -48,14 +46,12 @@ public class HomeCommand implements CommandExecutor {
             }
             homeName = homes.get(0); // Get the first home
         }
-        location = homeSystem.getHome(player, homeName);
+        Location location = homeSystem.getHome(player, homeName);
         if (location == null) {
             player.sendMessage("Home '" + homeName + "' not found.");
             return true;
         }
-        player.teleport(location);
-        player.sendMessage("Teleported to home '" + homeName + "'!");
-        loggerUtil.logInfo("Player '" + player.getName() + "' teleported to home '" + homeName + "'.");
+        teleportSystem.teleportPlayer(player, homeName);
         return true;
     }
 }

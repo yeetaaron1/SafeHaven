@@ -13,14 +13,10 @@ import java.util.List;
 public class HomesCommand implements CommandExecutor {
 
 
-    private final SafeHaven plugin;
     private final HomeSystem homeSystem;
-    private final LoggerUtil loggerUtil;
 
     public HomesCommand(SafeHaven plugin, HomeSystem homeSystem) {
-        this.plugin = plugin;
         this.homeSystem = homeSystem;
-        this.loggerUtil = new LoggerUtil(plugin);
     }
 
     @Override
@@ -29,17 +25,12 @@ public class HomesCommand implements CommandExecutor {
             commandSender.sendMessage("This command can only be used by players.");
             return true;
         }
-
         Player player = (Player) commandSender;
-
-        // Check permission
         if (!player.hasPermission("safehaven.homes")) {
             player.sendMessage("You do not have permission to use this command.");
             return true;
         }
-
         List<String> homes = homeSystem.getHomes(player);
-
         if (homes.isEmpty()) {
             player.sendMessage("You have no homes set.");
         } else {
@@ -48,8 +39,6 @@ public class HomesCommand implements CommandExecutor {
                 player.sendMessage("- " + home);
             }
         }
-
-        loggerUtil.logInfo("Player '" + player.getName() + "' listed their homes.");
         return true;
     }
 }
