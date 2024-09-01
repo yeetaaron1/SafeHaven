@@ -18,10 +18,10 @@ public class MySQLHomeStorage implements HomeStorage {
     private final DatabaseUtil databaseUtil;
     private final LoggerUtil loggerUtil;
 
-    public MySQLHomeStorage(SafeHaven plugin){
+    public MySQLHomeStorage(SafeHaven plugin, DatabaseUtil databaseUtil){
         this.plugin = plugin;
-        this.databaseUtil = SafeHaven.getDatabaseUtil();
-        this.loggerUtil = SafeHaven.getLoggerUtil();
+        this.databaseUtil = databaseUtil;
+        this.loggerUtil = plugin.getLoggerUtil();
 
         if (this.databaseUtil == null) {
             throw new IllegalStateException("DatabaseUtil is not initialized.");
@@ -46,7 +46,6 @@ public class MySQLHomeStorage implements HomeStorage {
             statement.setFloat(7, location.getYaw());
             statement.setFloat(8, location.getPitch());
             statement.executeUpdate();
-            loggerUtil.logInfo("Home '%s' saved for player '%s' in MySQL".formatted(homeName, uuid));
         } catch (SQLException e){
             loggerUtil.logError("Failed to save home to MySQL for player '%s' : %s".formatted(uuid, e.getMessage()));
         }
@@ -82,7 +81,6 @@ public class MySQLHomeStorage implements HomeStorage {
             statement.setString(2, homeName);
             int rowsAffected = statement.executeUpdate();
             if(rowsAffected > 0){
-                loggerUtil.logInfo("Home '%s' deleted for player '%s' in YAML.".formatted(homeName, uuid));
                 return true;
             }
         } catch (SQLException e){

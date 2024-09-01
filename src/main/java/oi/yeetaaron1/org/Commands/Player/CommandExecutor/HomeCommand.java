@@ -2,8 +2,8 @@ package oi.yeetaaron1.org.Commands.Player.CommandExecutor;
 
 import oi.yeetaaron1.org.SafeHaven;
 import oi.yeetaaron1.org.System.Server.HomeSystem;
+import oi.yeetaaron1.org.System.Server.MessageSystem;
 import oi.yeetaaron1.org.System.Server.TeleportSystem;
-import oi.yeetaaron1.org.Utils.LoggerUtil;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,10 +16,12 @@ public class HomeCommand implements CommandExecutor {
 
     private final HomeSystem homeSystem;
     private final TeleportSystem teleportSystem;
+    private final MessageSystem messageSystem;
 
     public HomeCommand(SafeHaven plugin, HomeSystem homeSystem) {
         this.homeSystem = homeSystem;
         this.teleportSystem = new TeleportSystem(plugin, homeSystem);
+        this.messageSystem = new MessageSystem(plugin);
     }
 
     @Override
@@ -49,6 +51,7 @@ public class HomeCommand implements CommandExecutor {
         Location location = homeSystem.getHome(player, homeName);
         if (location == null) {
             player.sendMessage("Home '" + homeName + "' not found.");
+            messageSystem.sendErrorCommandMessage(player);
             return true;
         }
         teleportSystem.teleportPlayer(player, homeName);

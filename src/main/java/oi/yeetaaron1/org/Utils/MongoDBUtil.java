@@ -9,7 +9,6 @@ import oi.yeetaaron1.org.SafeHaven;
 
 public class MongoDBUtil {
 
-    private final SafeHaven plugin;
     private final ConfigUtil configUtil;
     private final LoggerUtil loggerUtil;
 
@@ -17,7 +16,6 @@ public class MongoDBUtil {
     private MongoDatabase database;
 
     public MongoDBUtil(SafeHaven plugin, ConfigUtil configUtil) {
-        this.plugin = plugin;
         this.configUtil = configUtil;
         this.loggerUtil = new LoggerUtil(plugin);
         initializeMongoDB();

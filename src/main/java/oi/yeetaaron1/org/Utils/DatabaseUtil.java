@@ -25,14 +25,14 @@ public class DatabaseUtil {
 
     private void connect() {
         try {
-            if (dbType.equalsIgnoreCase("MySQL")) {
+            if (dbType.equalsIgnoreCase("mysql")) {
                 String url = configUtil.getMySQLUrl();
                 String user = configUtil.getMySQLUser();
                 String password = configUtil.getMySQLPassword();
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager.getConnection(url, user, password);
                 loggerUtil.logInfo("Connected to MySQL database.");
-            } else if (dbType.equalsIgnoreCase("SQLite")) {
+            } else if (dbType.equalsIgnoreCase("sqlite")) {
                 String url = "jdbc:sqlite:" + plugin.getDataFolder() + "/" + configUtil.getSQLiteFile();
                 Class.forName("org.sqlite.JDBC");
                 connection = DriverManager.getConnection(url);

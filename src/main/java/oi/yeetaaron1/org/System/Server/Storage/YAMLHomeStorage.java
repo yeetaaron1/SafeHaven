@@ -12,22 +12,21 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class YAMLHomeStorage implements HomeStorage{
+public class YAMLHomeStorage implements HomeStorage {
 
     private final SafeHaven plugin;
     private final File playerDataFolder;
     private final LoggerUtil loggerUtil;
 
-    public YAMLHomeStorage(SafeHaven plugin, File playerDataFolder){
+    public YAMLHomeStorage(SafeHaven plugin, File dataFolder) {
         this.plugin = plugin;
-        this.playerDataFolder = playerDataFolder;
-        this.loggerUtil = SafeHaven.getLoggerUtil();
+        this.loggerUtil = plugin.getLoggerUtil();
+        this.playerDataFolder = new File(dataFolder, "player");
 
-        if(!playerDataFolder.exists()){
+        if (!playerDataFolder.exists()) {
             playerDataFolder.mkdirs();
         }
     }
-
 
     @Override
     public void saveHome(UUID uuid, String homeName, Location location) {
@@ -40,10 +39,9 @@ public class YAMLHomeStorage implements HomeStorage{
         playerData.set(path + ".z", location.getZ());
         playerData.set(path + ".yaw", location.getYaw());
         playerData.set(path + ".pitch", location.getPitch());
-        try{
+        try {
             playerData.save(playerFile);
-            loggerUtil.logInfo("Home '%s' saved for player '%s' in YAML.".formatted(homeName, uuid));
-        } catch (IOException e){
+        } catch (IOException e) {
             loggerUtil.logError("Failed to save home to YAML for player '%s' : %s".formatted(uuid, e.getMessage()));
         }
     }
@@ -51,12 +49,12 @@ public class YAMLHomeStorage implements HomeStorage{
     @Override
     public Location getHome(UUID uuid, String homeName) {
         File playerFile = new File(playerDataFolder, uuid.toString() + ".yml");
-        if(!playerFile.exists()) {
+        if (!playerFile.exists()) {
             return null;
         }
         YamlConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
         String path = "homes." + homeName;
-        if(!playerData.contains(path)){
+        if (!playerData.contains(path)) {
             return null;
         }
         String worldName = playerData.getString(path + ".world");
@@ -71,18 +69,17 @@ public class YAMLHomeStorage implements HomeStorage{
     @Override
     public boolean deleteHome(UUID uuid, String homeName) {
         File playerFile = new File(playerDataFolder, uuid.toString() + ".yml");
-        if(!playerFile.exists()){
+        if (!playerFile.exists()) {
             return false;
         }
         YamlConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
         String path = "homes." + homeName;
-        if(playerData.contains(path)){
+        if (playerData.contains(path)) {
             playerData.set(path, null);
-            try{
+            try {
                 playerData.save(playerFile);
-                loggerUtil.logInfo("Home '%s' deleted for player '%s' in YAML.".formatted(homeName, uuid));
                 return true;
-            } catch (IOException e){
+            } catch (IOException e) {
                 loggerUtil.logError("Failed to delete home from YAML for player '%s' : %s".formatted(uuid, e.getMessage()));
             }
         }
@@ -92,8 +89,8 @@ public class YAMLHomeStorage implements HomeStorage{
     @Override
     public List<String> getHomes(UUID uuid) {
         File playerFile = new File(playerDataFolder, uuid.toString() + ".yml");
-        if(!playerFile.exists()){
-            return  new ArrayList<>();
+        if (!playerFile.exists()) {
+            return new ArrayList<>();
         }
         YamlConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
         Set<String> homeKeys = playerData.getConfigurationSection("homes").getKeys(false);

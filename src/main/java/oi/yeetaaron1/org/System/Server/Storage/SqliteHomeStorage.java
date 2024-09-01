@@ -20,8 +20,8 @@ public class SqliteHomeStorage implements HomeStorage {
 
     public SqliteHomeStorage(SafeHaven plugin){
         this.plugin = plugin;
-        this.databaseUtil = SafeHaven.getDatabaseUtil();
-        this.loggerUtil = SafeHaven.getLoggerUtil();
+        this.databaseUtil = plugin.getDatabaseUtil();
+        this.loggerUtil = plugin.getLoggerUtil();
     }
 
     @Override
@@ -39,7 +39,6 @@ public class SqliteHomeStorage implements HomeStorage {
             statement.setFloat(7, location.getYaw());
             statement.setFloat(8, location.getPitch());
             statement.executeUpdate();
-            loggerUtil.logInfo("Home '%s' saved for player '%s' in SQlite".formatted(homeName, uuid));
         } catch (SQLException e){
             loggerUtil.logError("Failed to save home to SQlite for player '%s' : %s".formatted(uuid, e.getMessage()));
         }
@@ -75,7 +74,6 @@ public class SqliteHomeStorage implements HomeStorage {
             statement.setString(2, homeName);
             int rowsAffected = statement.executeUpdate();
             if(rowsAffected > 0){
-                loggerUtil.logInfo("Home '%s' deleted for player '%s' in SQlite.".formatted(homeName, uuid));
                 return true;
             }
         } catch (SQLException e){

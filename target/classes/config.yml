@@ -1,11 +1,75 @@
-home-system:
-  max-homes: 10
-  storage-method: YAML # Options: YAML, MySQL, SQLite
+# Configuration for SafeHaven plugin
 
-database:
-  mysql:
-    url: jdbc:mysql://localhost:3306/your_database
-    user: your_username
-    password: your_password
-  sqlite:
-    file: database.db
+# Custom Messages Section
+messages:
+  # Prefix settings for the plugin's messages
+  prefix:
+    # The text to be displayed as the prefix, supports MiniMessage formatting
+    name: "<gradient:#00FF00:#00CC00>[SafeHaven]</gradient>"
+    # Indicates if the prefix should be included in plugin messages
+    value: true
+  # Success message format
+  success:
+    format: "<green>Operation completed successfully!</green>"
+  # Missing permission message format
+  missing-permission:
+    format: "<orange>You do not have permission to execute this command.</orange>"
+  # Info command message format
+  info-command:
+    format: "<blue>Use /homeinfo for more details.</blue>"
+  # Error command message format
+  error-command:
+    format: "<red>An error occurred while processing your request.</red>"
+
+# Home System Settings Section
+home-system:
+  # Maximum number of homes a player can set
+  max-homes: 10
+  # Storage method for home data
+  # Options: yaml, mysql, sqlite, mongodb
+  storage-method: yaml
+  # Delay in seconds before teleportation occurs
+  teleport-delay-seconds: 5
+  # Time in seconds the player must stand still before teleportation
+  stand-still-time-seconds: 3
+
+# Storage System Section
+storage:
+  # Details for the home system storage method
+  # This is configured by the home-system section
+
+  # Database Configuration Section
+  database:
+    # MySQL configuration
+    mysql:
+      # JDBC URL for connecting to MySQL database
+      url: jdbc:mysql://localhost:3306/your_database
+      # MySQL username for authentication
+      user: your_username
+      # MySQL password for authentication
+      password: your_password
+    # SQLite configuration
+    sqlite:
+      # File path for the SQLite database file
+      file: database.db
+    # MongoDB configuration
+    mongodb:
+      # Connection string for MongoDB
+      url: mongodb://localhost:27017/your_database
+      # MongoDB username for authentication (optional)
+      user: your_username
+      # MongoDB password for authentication (optional)
+      password: your_password
+
+# Bedrock Player Configuration Section (Floodgate)
+bedrock-players:
+  # Whether Bedrock players are enabled
+  enabled: true
+  # Floodgate-related configuration
+  floodgate:
+    # The path to the Floodgate plugin file
+    path: plugins/Floodgate.jar
+    #
+    guisystem: true
+    #
+    menusystem: false

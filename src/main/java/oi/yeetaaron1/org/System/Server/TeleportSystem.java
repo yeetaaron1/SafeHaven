@@ -21,8 +21,9 @@ public class TeleportSystem implements Listener {
 
     private final SafeHaven plugin;
     private final HomeSystem homeSystem;
+    private final MessageSystem messageSystem;
+
     private final int teleportDelaySeconds = 3; // Teleport delay in seconds
-    private final int godModeDurationSeconds = 4; // God mode duration in seconds
     private final int standStillTimeSeconds = 5; // Time the player must stand still
 
     // Store the players who are in the teleport queue
@@ -31,12 +32,14 @@ public class TeleportSystem implements Listener {
     public TeleportSystem(SafeHaven plugin, HomeSystem homeSystem) {
         this.plugin = plugin;
         this.homeSystem = homeSystem;
+        this.messageSystem = new MessageSystem(plugin);
     }
 
     public void teleportPlayer(Player player, String homeName) {
         Location homeLocation = homeSystem.getHome(player, homeName);
         if (homeLocation == null) {
             player.sendMessage("The home \"" + homeName + "\" does not exist.");
+            messageSystem.sendInfoCommandMessage(player);
             return;
         }
 

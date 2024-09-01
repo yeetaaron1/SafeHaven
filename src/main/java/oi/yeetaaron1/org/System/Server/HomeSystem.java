@@ -3,6 +3,7 @@ package oi.yeetaaron1.org.System.Server;
 import oi.yeetaaron1.org.SafeHaven;
 import oi.yeetaaron1.org.System.Server.Storage.*;
 import oi.yeetaaron1.org.Utils.ConfigUtil;
+import oi.yeetaaron1.org.Utils.DatabaseUtil;
 import oi.yeetaaron1.org.Utils.LoggerUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -16,21 +17,22 @@ public class HomeSystem {
     private final LoggerUtil loggerUtil;
 
     public HomeSystem(SafeHaven plugin) {
-        this.loggerUtil = SafeHaven.getLoggerUtil();
-        ConfigUtil configUtil = SafeHaven.getConfigUtil();
+        this.loggerUtil = plugin.getLoggerUtil();
+        ConfigUtil configUtil = plugin.getConfigUtil();
         String storageMethod = configUtil.getStorageMethod();
+        DatabaseUtil databaseUtil = plugin.getDatabaseUtil();
 
-        switch (storageMethod.toUpperCase()) {
-            case "YAML":
+        switch (storageMethod.toLowerCase()) {
+            case "yaml":
                 this.homeStorage = new YAMLHomeStorage(plugin, configUtil.getDataFolder());
                 break;
-            case "MYSQL":
-                this.homeStorage = new MySQLHomeStorage(plugin);
+            case "mysql":
+                this.homeStorage = new MySQLHomeStorage(plugin, databaseUtil);
                 break;
-            case "SQLITE":
+            case "sqlite":
                 this.homeStorage = new SqliteHomeStorage(plugin);
                 break;
-            case "MONGODB":
+            case "mongodb":
                 this.homeStorage = new MongoDBHomeStorage(plugin);
                 break;
             default:

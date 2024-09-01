@@ -21,9 +21,9 @@ public class MongoDBHomeStorage implements HomeStorage {
 
     public MongoDBHomeStorage(SafeHaven plugin) {
         this.plugin = plugin;
-        this.database = SafeHaven.getMongoDBUtil().getDatabase();
+        this.database = plugin.getMongoDBUtil().getDatabase();
         this.homesCollection = database.getCollection("homes");
-        this.loggerUtil = SafeHaven.getLoggerUtil();
+        this.loggerUtil = plugin.getLoggerUtil();
         homesCollection.createIndex(new Document("uuid", 1).append("homeName", 1));
     }
 
@@ -43,7 +43,6 @@ public class MongoDBHomeStorage implements HomeStorage {
                 homeDoc,
                 new ReplaceOptions().upsert(true)
         );
-        loggerUtil.logInfo("Home '%s' saved for player '%s' in MongoDB".formatted(homeName, uuid));
     }
 
     @Override
@@ -71,7 +70,6 @@ public class MongoDBHomeStorage implements HomeStorage {
                 new Document("uuid", uuid.toString()).append("homeName", homeName)
         );
         if (result != null) {
-            loggerUtil.logInfo("Home '%s' deleted for player '%s' in MongoDB.".formatted(homeName, uuid));
             return true;
         } else {
             loggerUtil.logError("Failed to delete home '%s' for player '%s' in MongoDB.".formatted(homeName, uuid));

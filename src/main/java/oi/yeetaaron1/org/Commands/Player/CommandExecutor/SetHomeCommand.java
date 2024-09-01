@@ -16,7 +16,7 @@ public class SetHomeCommand implements CommandExecutor {
 
     public SetHomeCommand(SafeHaven plugin, HomeSystem homeSystem) {
         this.homeSystem = homeSystem;
-        this.maxHomes = SafeHaven.getConfigUtil().getMaxHomes(); // Retrieve max homes from config
+        this.maxHomes = plugin.getConfigUtil().getMaxHomes(); // Retrieve max homes from config
     }
 
     @Override

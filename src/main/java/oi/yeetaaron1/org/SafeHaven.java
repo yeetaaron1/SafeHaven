@@ -18,7 +18,6 @@ public final class SafeHaven extends JavaPlugin {
     @Override
     public void onEnable() {
         initializeComponents();
-        setupDatabase();
         logPluginInfo();
     }
 
@@ -30,6 +29,7 @@ public final class SafeHaven extends JavaPlugin {
     private void initializeComponents() {
         loggerUtil = new LoggerUtil(this);
         configUtil = new ConfigUtil(this);
+        setupDatabase();
         CommandManager commandManager = new CommandManager(this);
         commandManager.registerCommands();
         EventManager eventManager = new EventManager(this);
@@ -42,15 +42,15 @@ public final class SafeHaven extends JavaPlugin {
         loggerUtil.logInfo("Storage method: " + storageMethod);
 
         try {
-            if (storageMethod.equalsIgnoreCase("MySQL")) {
+            if (storageMethod.equalsIgnoreCase("mysql")) {
                 databaseUtil = new DatabaseUtil(this, storageMethod, configUtil);
                 loggerUtil.logInfo("Initialized MySQL DatabaseUtil.");
                 databaseUtil.setupMySQLTable();
-            } else if (storageMethod.equalsIgnoreCase("SQLite")) {
+            } else if (storageMethod.equalsIgnoreCase("sqlite")) {
                 databaseUtil = new DatabaseUtil(this, storageMethod, configUtil);
                 loggerUtil.logInfo("Initialized SQLite DatabaseUtil.");
                 databaseUtil.setupSQLiteTable();
-            } else if (storageMethod.equalsIgnoreCase("MongoDB")) {
+            } else if (storageMethod.equalsIgnoreCase("mongodb")) {
                 mongoDBUtil = new MongoDBUtil(this, configUtil);
             } else {
                 loggerUtil.logInfo("Using YAML storage as the configured method is not supported.");
@@ -59,7 +59,6 @@ public final class SafeHaven extends JavaPlugin {
             loggerUtil.logError("Database setup error: " + e.getMessage());
         }
     }
-
 
     private void logPluginInfo() {
         loggerUtil.logInfo("Starting SafeHaven %s by %s...".formatted(
@@ -74,25 +73,25 @@ public final class SafeHaven extends JavaPlugin {
         loggerUtil.logInfo("SafeHaven Plugin is shutting down...");
         if (databaseUtil != null) {
             databaseUtil.close();
-        } else if(mongoDBUtil != null){
+        } else if (mongoDBUtil != null) {
             mongoDBUtil.close();
         }
         loggerUtil.logInfo("SafeHaven Plugin has been disabled successfully!");
     }
 
-    public static LoggerUtil getLoggerUtil() {
+    public LoggerUtil getLoggerUtil() {
         return loggerUtil;
     }
 
-    public static ConfigUtil getConfigUtil() {
+    public ConfigUtil getConfigUtil() {
         return configUtil;
     }
 
-    public static DatabaseUtil getDatabaseUtil() {
+    public DatabaseUtil getDatabaseUtil() {
         return databaseUtil;
     }
 
-    public static MongoDBUtil getMongoDBUtil() {
+    public MongoDBUtil getMongoDBUtil() {
         return mongoDBUtil;
     }
 }
