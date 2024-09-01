@@ -2,51 +2,54 @@ package oi.yeetaaron1.org.Commands.Player.CommandExecutor;
 
 import oi.yeetaaron1.org.SafeHaven;
 import oi.yeetaaron1.org.System.Server.HomeSystem;
-import oi.yeetaaron1.org.Utils.LoggerUtil;
+import oi.yeetaaron1.org.System.Server.MessageSystem;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class SetHomeCommand implements CommandExecutor {
 
     private final HomeSystem homeSystem;
     private final int maxHomes;
+    private final MessageSystem messageSystem;
 
     public SetHomeCommand(SafeHaven plugin, HomeSystem homeSystem) {
         this.homeSystem = homeSystem;
         this.maxHomes = plugin.getConfigUtil().getMaxHomes(); // Retrieve max homes from config
+        this.messageSystem = plugin.getMessageSystem();
     }
 
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, String[] args) {
         if (!(commandSender instanceof Player)) {
-            commandSender.sendMessage("This command can only be used by players.");
+            messageSystem.sendLocalizedMessage(commandSender, "command.common.player-only");
             return true;
         }
         Player player = (Player) commandSender;
         if (!player.hasPermission("safehaven.sethome")) {
-            player.sendMessage("You do not have permission to use this command.");
+            messageSystem.sendLocalizedMessage(player, "command.common.no-permission");
             return true;
         }
         String homeName;
-        if (strings.length == 0) {
+        if (args.length == 0) {
             homeName = "default";
-        } else if (strings.length == 1) {
-            homeName = strings[0];
+        } else if (args.length == 1) {
+            homeName = args[0];
         } else {
-            player.sendMessage("Usage: /sethome [home_name]");
+            messageSystem.sendLocalizedMessage(player, "command.sethome.usage");
             return true;
         }
         int homeCount = homeSystem.getHomeCount(player);
         if (homeCount >= maxHomes) {
-            player.sendMessage("You have reached the maximum number of homes (" + maxHomes + ").");
+            messageSystem.sendLocalizedMessage(player, "command.sethome.max-homes", maxHomes);
             return true;
         }
         Location location = player.getLocation();
         homeSystem.saveHome(player, homeName, location);
-        player.sendMessage("Home '" + homeName + "' has been set!");
+        messageSystem.sendLocalizedMessage(player, "command.sethome.success", homeName);
         return true;
     }
 }

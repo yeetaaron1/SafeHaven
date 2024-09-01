@@ -15,25 +15,20 @@ public class SafeHavenCompleter implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (!(sender instanceof Player) && !sender.isOp()) {
-            return Collections.emptyList(); // No tab completion for non-players or non-op console users
+            return Collections.emptyList();
         }
 
-        // Check if the command starts with /safehaven
         if (!command.getName().equalsIgnoreCase("safehaven")) {
             return Collections.emptyList();
         }
 
-        // Handle tab completion based on the number of arguments
         if (args.length == 1) {
-            // First argument: command names
             return getCommandSuggestions(args[0]);
         } else if (args.length == 2) {
-            // Second argument: player names or other options depending on the command
             if (Arrays.asList("sethome", "home", "delhome", "list").contains(args[0].toLowerCase())) {
                 return getPlayerSuggestions(args[1]);
             }
         } else if (args.length == 3) {
-            // Third argument: home names for sethome, home, delhome
             if (Arrays.asList("sethome", "home", "delhome").contains(args[0].toLowerCase())) {
                 Player player = (Player) sender;
                 return getHomeNameSuggestions(player, args[2]);

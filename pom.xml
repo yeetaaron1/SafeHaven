@@ -6,7 +6,7 @@
 
     <groupId>oi.yeetaaron1</groupId>
     <artifactId>SafeHaven</artifactId>
-    <version>0.06-ALPHA</version>
+    <version>0.07-ALPHA</version>
     <packaging>jar</packaging>
 
     <name>SafeHaven</name>
@@ -41,11 +41,20 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>3.0.0-M1</version>
+            </plugin>
         </plugins>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+                <includes>
+                    <include>**/*.yml</include>
+                    <include>**/language/**</include> <!-- Ensure the language folder is included -->
+                </includes>
             </resource>
         </resources>
     </build>

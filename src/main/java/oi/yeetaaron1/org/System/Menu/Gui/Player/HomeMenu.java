@@ -1,6 +1,9 @@
 package oi.yeetaaron1.org.System.Menu.Gui.Player;
 
+import oi.yeetaaron1.org.SafeHaven;
 import oi.yeetaaron1.org.System.Menu.Gui.GuiMenu;
+import oi.yeetaaron1.org.System.Server.HomeSystem;
+import oi.yeetaaron1.org.System.Server.MessageSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -10,9 +13,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class HomeMenu implements GuiMenu {
 
+    private final MessageSystem messageSystem;
+
+    public HomeMenu(SafeHaven plugin){
+        this.messageSystem = new MessageSystem(plugin);
+    }
+
     @Override
     public void open(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, 27, "Home Menu");
+        Inventory inventory = Bukkit.createInventory(null, 27,  messageSystem.sendLocalizedTitle("gui.home.menu"));
 
         // Add border of enchanted glass panels
         for (int i = 0; i < 27; i++) {
@@ -22,9 +31,9 @@ public class HomeMenu implements GuiMenu {
         }
 
         // Add menu items
-        inventory.setItem(11, createMenuItem(Material.DIAMOND_SWORD, "Set Home"));
-        inventory.setItem(13, createMenuItem(Material.BOOK, "View Homes"));
-        inventory.setItem(15, createMenuItem(Material.BARRIER, "Delete Home"));
+        inventory.setItem(11, createMenuItem(Material.DIAMOND_SWORD, messageSystem.sendLocalizedTitle("gui.sethome.menu")));
+        inventory.setItem(13, createMenuItem(Material.BOOK, messageSystem.sendLocalizedTitle("gui.listofhomes.menu")));
+        inventory.setItem(15, createMenuItem(Material.BARRIER, messageSystem.sendLocalizedTitle("gui.deletehome.menu")));
 
         player.openInventory(inventory);
     }

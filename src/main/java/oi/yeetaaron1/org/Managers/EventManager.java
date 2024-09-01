@@ -19,7 +19,7 @@ public class EventManager {
     public void registerEvents() {
         plugin.getServer().getPluginManager().registerEvents(new BedEvent(homeSystem), plugin);
         plugin.getServer().getPluginManager().registerEvents(new GuiSystem(plugin, homeSystem), plugin);
-        plugin.getServer().getPluginManager().registerEvents(new DeathEvent(homeSystem), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new DeathEvent(plugin, homeSystem), plugin);
         // Add other event listeners as needed
     }
 }

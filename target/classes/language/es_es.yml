@@ -1,0 +1,84 @@
+# Mensajes Comunes
+command:
+  common:
+    no-permission: "No tienes permiso para usar este comando."
+    unknown-command: "Comando desconocido. Usa /safehaven help para una lista de comandos."
+    player-only: "Este comando solo puede ser usado por jugadores."
+
+  # Mensajes de Comando de Administrador
+  admin:
+    admingui:
+      usage: "Uso: /safehaven admingui <param>"
+      success: "Comando del GUI de administrador ejecutado."
+    sethome:
+      usage: "Uso: /safehaven sethome <home_name> [name]"
+      success: "Casa '{0}' establecida para el jugador '{1}'."
+    home:
+      usage: "Uso: /safehaven home <player> [name]"
+      success: "Comando de casa ejecutado para el jugador: {0}, con nombre: {1}"
+    delhome:
+      usage: "Uso: /safehaven delhome <home_name>"
+      success: "¡La casa '{0}' ha sido eliminada!"
+    list:
+      usage: "Uso: /safehaven list <player>"
+      success: "Comando de lista de casas ejecutado para el jugador: {0}"
+  # Mensajes de Comando del Jugador DelHome
+  delhome:
+    success: "¡La casa '{0}' ha sido eliminada!"
+    not-found: "Casa '{0}' no encontrada."
+    no-permission: "No tienes permiso para usar este comando."
+    sender-only: "Este comando solo puede ser usado por jugadores."
+  # Mensajes de Comando de Casa del Jugador
+  home:
+    usage: "Uso: /home [home_name]"
+    no-homes: "No tienes casas establecidas."
+    not-found: "Casa '{0}' no encontrada."
+    success: "Teletransportado a la casa '{0}'."
+  # Mensajes de Comando de Casas del Jugador
+  homes:
+    no-homes: "No tienes casas establecidas."
+    list-header: "Tus casas:"
+    list-item: "- {0}"
+  # Mensajes de Comando de Establecer Casa del Jugador
+  sethome:
+    usage: "Uso: /sethome [home_name]"
+    max-homes: "Has alcanzado el número máximo de casas ({0})."
+    success: "¡La casa '{0}' ha sido establecida!"
+
+# Mensajes de Eventos de Jugador
+event:
+  # Mensajes de Evento de Muerte del Jugador
+  death:
+    teleport-success: "Te has teletransportado a tu casa: {0}"
+    no-home-found: "No se encontró ninguna casa para teletransportarse después de la muerte."
+
+# Mensajes del Sistema de Menú GUI
+gui:
+  guisystem:
+    sethome:
+      nameprompt: "¡Nombra tu casa ahora!"
+    home:
+      deleted: "Casa '{0}' ha sido eliminada."
+  # Títulos del GUI
+  home:
+    menu: "Menú de Casas"
+  sethome:
+    menu: "Menú de Establecer Casa"
+    click: "Haz clic para nombrar la casa"
+    back: "Volver"
+  listofhomes:
+    menu: "Lista de Casas"
+    back: "Volver"
+  deletehome:
+    menu: "Menú de Eliminar Casa"
+    back: "Volver"
+  confirmdeletehome:
+    menu: "Confirmar Eliminación de Casa"
+    confirm: "Confirmar Eliminación"
+    cancel: "Cancelar Eliminación"
+# Mensajes del Sistema de Teletransporte
+teleport:
+  doesntexit: "La casa '{0}' no existe."
+  countdown: "Teletransportándose en '{0}' ..."
+  foundhome: "Te has teletransportado a tu casa: '{0}'"
+  canceled: "Teletransporte cancelado debido al movimiento."

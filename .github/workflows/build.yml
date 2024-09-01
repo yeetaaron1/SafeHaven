@@ -1,0 +1,41 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - master
+  release:
+    types:
+      - created
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt-openjdk'
+
+      - name: Build with Maven
+        run: mvn clean package
+
+      - name: Upload JAR to Releases
+        if: startsWith(github.event.name, 'release')
+        uses: actions/upload-artifact@v3
+        with:
+          name: plugin-jar
+          path: target/*.jar
+
+      - name: Publish Release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v1
+        with:
+          files: target/*.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

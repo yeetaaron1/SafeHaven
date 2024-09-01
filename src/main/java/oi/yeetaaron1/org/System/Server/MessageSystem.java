@@ -4,94 +4,113 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import oi.yeetaaron1.org.SafeHaven;
 import oi.yeetaaron1.org.Utils.ConfigUtil;
-import org.bukkit.entity.Player;
+import oi.yeetaaron1.org.Utils.LanguageUtil;
+import org.bukkit.command.CommandSender;
 
+import java.text.MessageFormat;
+
+/**
+ * Handles the sending of localized messages to command senders with optional message formatting.
+ * <p>
+ * This class uses a {@link LanguageUtil} instance to retrieve localized messages and a {@link ConfigUtil} instance to get the
+ * plugin prefix. Messages are formatted with a prefix if configured and then sent to the {@link CommandSender} using the
+ * Adventure API.
+ * </p>
+ *
+ * @since 0.07-ALPHA
+ */
 public class MessageSystem {
 
     private final ConfigUtil configUtil;
-    private final MiniMessage miniMessage = MiniMessage.builder().build();
+    private final LanguageUtil languageUtil;
+    private final MiniMessage miniMessage = MiniMessage.miniMessage();
 
-    // Predefined message formats
-    private static final String SUCCESS_MESSAGE = "<green>Operation completed successfully!</green>";
-    private static final String MISSING_PERMISSION_MESSAGE = "<red>You do not have permission to execute this command.</red>";
-    private static final String INFO_COMMAND_MESSAGE = "<blue>Use /info for more details.</blue>";
-    private static final String ERROR_COMMAND_MESSAGE = "<red>An error occurred while processing your request.</red>";
-
+    /**
+     * Constructs a new {@code MessageSystem} instance.
+     *
+     * @param plugin the {@link SafeHaven} plugin instance used to retrieve configuration and language utilities
+     */
     public MessageSystem(SafeHaven plugin) {
         this.configUtil = plugin.getConfigUtil();
+        this.languageUtil = plugin.getLanguageUtil();
     }
 
     /**
-     * Formats a message by including the prefix and applying MiniMessage formatting.
+     * Sends a localized message to a {@link CommandSender}.
+     * <p>
+     * Retrieves the message from {@link LanguageUtil} using the provided message key and sends it to the {@link CommandSender}
+     * with optional formatting.
+     * </p>
      *
-     * @param message The MiniMessage formatted message.
-     * @return The formatted message with prefix.
+     * @param sender the {@link CommandSender} to receive the message
+     * @param messageKey the key used to retrieve the localized message from the language file
+     */
+    public void sendLocalizedMessage(CommandSender sender, String messageKey) {
+        String message = languageUtil.getMessage(messageKey);
+        sendMessage(sender, message);
+    }
+
+    /**
+     * Sends a localized message with placeholders replaced by specified values.
+     * <p>
+     * Retrieves the message from {@link LanguageUtil} using the provided message key, replaces placeholders in the message
+     * with the provided values, and sends it to the {@link CommandSender}.
+     * </p>
+     *
+     * @param sender the {@link CommandSender} to receive the message
+     * @param messageKey the key used to retrieve the localized message from the language file
+     * @param replacements values to replace placeholders in the message
+     */
+    public void sendLocalizedMessage(CommandSender sender, String messageKey, Object... replacements) {
+        String message = languageUtil.getMessage(messageKey);
+        for (int i = 0; i < replacements.length; i++) {
+            String replacement = replacements[i].toString();
+            message = message.replace("{" + i + "}", replacement);
+        }
+        sendMessage(sender, message);
+    }
+
+    /**
+     * Retrieves a localized title message.
+     * <p>
+     * Gets the message from {@link LanguageUtil} using the provided key. This message is intended to be used as a title, which
+     * can be sent to players.
+     * </p>
+     *
+     * @param key the key used to retrieve the localized title message from the language file
+     * @return the localized title message
+     */
+    public String sendLocalizedTitle(String key, Object... args) {
+        String message = languageUtil.getMessage(key); // Get the localized message by key
+        return MessageFormat.format(message, args); // Replace placeholders with provided arguments
+    }
+
+    /**
+     * Sends a formatted message to a {@link CommandSender}.
+     * <p>
+     * Formats the message with the configured plugin prefix and deserializes it using MiniMessage before sending it.
+     * </p>
+     *
+     * @param sender the {@link CommandSender} to receive the message
+     * @param message the message to be sent
+     */
+    private void sendMessage(CommandSender sender, String message) {
+        String formattedMessage = formatMessage(message);
+        Component component = miniMessage.deserialize(formattedMessage);
+        sender.sendMessage(component);
+    }
+
+    /**
+     * Formats the message with the plugin prefix.
+     * <p>
+     * If a plugin prefix is configured, it is prepended to the message. Otherwise, the message is returned as is.
+     * </p>
+     *
+     * @param message the original message
+     * @return the formatted message with the prefix
      */
     private String formatMessage(String message) {
         String prefix = configUtil.getPluginPrefix();
-        if (prefix.isEmpty()) {
-            return message; // No prefix, return the message as is
-        } else {
-            // Add the prefix to the message
-            return prefix + " " + message;
-        }
-    }
-
-    /**
-     * Sends a success message to a player.
-     *
-     * @param player The player to send the message to.
-     */
-    public void sendSuccessMessage(Player player) {
-        sendMessage(player, SUCCESS_MESSAGE);
-    }
-
-    /**
-     * Sends a missing permission message to a player.
-     *
-     * @param player The player to send the message to.
-     */
-    public void sendMissingPermissionMessage(Player player) {
-        sendMessage(player, MISSING_PERMISSION_MESSAGE);
-    }
-
-    /**
-     * Sends an info command message to a player.
-     *
-     * @param player The player to send the message to.
-     */
-    public void sendInfoCommandMessage(Player player) {
-        sendMessage(player, INFO_COMMAND_MESSAGE);
-    }
-
-    /**
-     * Sends an error command message to a player.
-     *
-     * @param player The player to send the message to.
-     */
-    public void sendErrorCommandMessage(Player player) {
-        sendMessage(player, ERROR_COMMAND_MESSAGE);
-    }
-
-    /**
-     * Sends a custom message to a player, applying the prefix.
-     *
-     * @param player The player to send the message to.
-     * @param customMessage The custom MiniMessage formatted message.
-     */
-    public void sendCustomMessage(Player player, String customMessage) {
-        sendMessage(player, customMessage);
-    }
-
-    /**
-     * Sends a message to a player using MiniMessage for parsing.
-     *
-     * @param player The player to send the message to.
-     * @param message The MiniMessage formatted message.
-     */
-    private void sendMessage(Player player, String message) {
-        String formattedMessage = formatMessage(message);
-        Component component = miniMessage.deserialize(formattedMessage);
-        player.sendMessage(component);
+        return prefix.isEmpty() ? message : prefix + " " + message;
     }
 }

@@ -1,27 +1,32 @@
 package oi.yeetaaron1.org.System.Menu.Gui.Player;
 
+import oi.yeetaaron1.org.SafeHaven;
 import oi.yeetaaron1.org.System.Menu.Gui.GuiMenu;
 import oi.yeetaaron1.org.System.Server.HomeSystem;
+import oi.yeetaaron1.org.System.Server.MessageSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 
 public class DelHomeMenu implements GuiMenu {
 
     private final HomeSystem homeSystem;
+    private final MessageSystem messageSystem;
 
-    public DelHomeMenu(HomeSystem homeSystem){
+    public DelHomeMenu(SafeHaven plugin, HomeSystem homeSystem){
         this.homeSystem = homeSystem;
+        this.messageSystem = new MessageSystem(plugin);
     }
 
     @Override
     public void open(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, 54, "Delete Home Menu");
+        Inventory inventory = Bukkit.createInventory(null, 54, messageSystem.sendLocalizedTitle("gui.deletehome.menu"));
 
         // Add border of glass panels
         for (int i = 0; i < 54; i++) {
@@ -36,7 +41,7 @@ public class DelHomeMenu implements GuiMenu {
             inventory.addItem(createMenuItem(Material.RED_BED, homeName));
         }
 
-        inventory.setItem(53, createMenuItem(Material.BARRIER, "Go Back"));
+        inventory.setItem(53, createMenuItem(Material.BARRIER, messageSystem.sendLocalizedTitle("gui.deletehome.back")));
 
         player.openInventory(inventory);
     }

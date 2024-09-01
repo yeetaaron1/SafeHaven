@@ -11,11 +11,28 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages player homes using various storage methods.
+ * <p>
+ * This class is responsible for saving, retrieving, deleting, and listing player homes. The storage method used is determined
+ * by the configuration settings and can be one of YAML, MySQL, SQLite, or MongoDB.
+ * </p>
+ *
+ * @since 0.07-ALPHA
+ */
 public class HomeSystem {
 
     private final HomeStorage homeStorage;
     private final LoggerUtil loggerUtil;
 
+    /**
+     * Constructs a new {@code HomeSystem} instance.
+     * <p>
+     * Initializes the appropriate {@link HomeStorage} implementation based on the configured storage method.
+     * </p>
+     *
+     * @param plugin the {@link SafeHaven} plugin instance used to retrieve configuration and utility instances
+     */
     public HomeSystem(SafeHaven plugin) {
         this.loggerUtil = plugin.getLoggerUtil();
         ConfigUtil configUtil = plugin.getConfigUtil();
@@ -40,6 +57,16 @@ public class HomeSystem {
         }
     }
 
+    /**
+     * Saves a home location for a player.
+     * <p>
+     * Attempts to save the home location for the specified player. Logs an error if the operation fails.
+     * </p>
+     *
+     * @param player the {@link Player} whose home is being saved
+     * @param homeName the name of the home to be saved
+     * @param location the {@link Location} of the home to be saved
+     */
     public void saveHome(Player player, String homeName, Location location) {
         try {
             homeStorage.saveHome(player.getUniqueId(), homeName, location);
@@ -48,6 +75,16 @@ public class HomeSystem {
         }
     }
 
+    /**
+     * Retrieves the home location for a player.
+     * <p>
+     * Attempts to retrieve the home location for the specified player and home name. Logs an error if the operation fails.
+     * </p>
+     *
+     * @param player the {@link Player} whose home is being retrieved
+     * @param homeName the name of the home to retrieve
+     * @return the {@link Location} of the home, or {@code null} if not found
+     */
     public Location getHome(Player player, String homeName) {
         try {
             return homeStorage.getHome(player.getUniqueId(), homeName);
@@ -57,6 +94,16 @@ public class HomeSystem {
         }
     }
 
+    /**
+     * Deletes a home for a player.
+     * <p>
+     * Attempts to delete the home for the specified player and home name. Logs an error if the operation fails.
+     * </p>
+     *
+     * @param player the {@link Player} whose home is being deleted
+     * @param homeName the name of the home to be deleted
+     * @return {@code true} if the home was successfully deleted, {@code false} otherwise
+     */
     public boolean deleteHome(Player player, String homeName) {
         try {
             return homeStorage.deleteHome(player.getUniqueId(), homeName);
@@ -66,6 +113,15 @@ public class HomeSystem {
         }
     }
 
+    /**
+     * Retrieves a list of all homes for a player.
+     * <p>
+     * Attempts to retrieve the list of home names for the specified player. Logs an error if the operation fails.
+     * </p>
+     *
+     * @param player the {@link Player} whose homes are being retrieved
+     * @return a {@link List} of home names for the player, or an empty list if no homes are found
+     */
     public List<String> getHomes(Player player) {
         try {
             return homeStorage.getHomes(player.getUniqueId());
@@ -75,6 +131,15 @@ public class HomeSystem {
         }
     }
 
+    /**
+     * Retrieves the count of homes for a player.
+     * <p>
+     * Attempts to retrieve the number of homes for the specified player. Logs an error if the operation fails.
+     * </p>
+     *
+     * @param player the {@link Player} whose home count is being retrieved
+     * @return the number of homes for the player
+     */
     public int getHomeCount(Player player) {
         try {
             return homeStorage.getHomeCount(player.getUniqueId());

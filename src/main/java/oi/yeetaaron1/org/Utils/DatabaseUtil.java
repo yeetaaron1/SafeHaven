@@ -7,6 +7,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Utility class for managing database connections and operations for the plugin.
+ * <p>
+ * This class supports both MySQL and SQLite databases. It handles establishing connections,
+ * setting up tables, and executing SQL statements. The class also provides methods for
+ * closing the database connection and logging relevant information and errors.
+ * </p>
+ *
+ * @since 0.07-ALPHA
+ */
 public class DatabaseUtil {
 
     private final SafeHaven plugin;
@@ -15,14 +25,25 @@ public class DatabaseUtil {
     private final String dbType;
     private final ConfigUtil configUtil;
 
+    /**
+     * Constructs a new {@code DatabaseUtil} instance and establishes a connection
+     * based on the specified database type.
+     *
+     * @param plugin the {@link SafeHaven} plugin instance associated with this utility
+     * @param dbType the type of the database to connect to ("mysql" or "sqlite")
+     * @param configUtil the {@link ConfigUtil} instance for retrieving database configuration
+     */
     public DatabaseUtil(SafeHaven plugin, String dbType, ConfigUtil configUtil) {
         this.plugin = plugin;
-        this.loggerUtil = new LoggerUtil(plugin);
+        this.loggerUtil = plugin.getLoggerUtil();
         this.dbType = dbType;
         this.configUtil = configUtil;
         connect();
     }
 
+    /**
+     * Establishes a connection to the database based on the specified database type.
+     */
     private void connect() {
         try {
             if (dbType.equalsIgnoreCase("mysql")) {
@@ -45,10 +66,19 @@ public class DatabaseUtil {
         }
     }
 
+    /**
+     * Returns the current database connection.
+     *
+     * @return the {@link Connection} instance to the database
+     */
     public Connection getConnection() {
         return connection;
     }
 
+    /**
+     * Sets up the MySQL table for storing player home data. This method creates the table
+     * if it does not already exist.
+     */
     public void setupMySQLTable() {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS player_homes (" +
                 "uuid VARCHAR(36) NOT NULL," +
@@ -65,6 +95,10 @@ public class DatabaseUtil {
         loggerUtil.logInfo("MySQL table for player homes has been set up.");
     }
 
+    /**
+     * Sets up the SQLite table for storing player home data. This method creates the table
+     * if it does not already exist.
+     */
     public void setupSQLiteTable() {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS player_homes (" +
                 "uuid TEXT NOT NULL," +
@@ -81,6 +115,11 @@ public class DatabaseUtil {
         loggerUtil.logInfo("SQLite table for player homes has been set up.");
     }
 
+    /**
+     * Executes an SQL update statement.
+     *
+     * @param sql the SQL statement to execute
+     */
     public void executeUpdate(String sql) {
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
@@ -89,6 +128,9 @@ public class DatabaseUtil {
         }
     }
 
+    /**
+     * Closes the database connection if it is open.
+     */
     public void close() {
         try {
             if (connection != null && !connection.isClosed()) {

@@ -1,6 +1,9 @@
 package oi.yeetaaron1.org.System.Server;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import oi.yeetaaron1.org.SafeHaven;
+import oi.yeetaaron1.org.Utils.ConfigUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -16,81 +19,88 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashSet;
 import java.util.Set;
 
-
+/**
+ * Handles the teleportation system for players, including countdowns, visual and sound effects, and player movement checks.
+ * <p>
+ * This class manages the teleportation process, including visual and auditory effects, countdowns, and checks for player movement
+ * during the teleportation countdown. It also interacts with the HomeSystem for retrieving home locations and the MessageSystem
+ * for sending messages to players.
+ * </p>
+ *
+ * @since 0.07-ALPHA
+ */
 public class TeleportSystem implements Listener {
 
     private final SafeHaven plugin;
     private final HomeSystem homeSystem;
     private final MessageSystem messageSystem;
+    private final ConfigUtil configUtil;
 
-    private final int teleportDelaySeconds = 3; // Teleport delay in seconds
-    private final int standStillTimeSeconds = 5; // Time the player must stand still
-
-    // Store the players who are in the teleport queue
     private final Set<Player> teleportQueue = new HashSet<>();
 
+    /**
+     * Constructs a new {@code TeleportSystem} instance.
+     *
+     * @param plugin the {@link SafeHaven} plugin instance associated with this system
+     * @param homeSystem the {@link HomeSystem} instance used for retrieving home locations
+     */
     public TeleportSystem(SafeHaven plugin, HomeSystem homeSystem) {
         this.plugin = plugin;
         this.homeSystem = homeSystem;
+        this.configUtil = plugin.getConfigUtil();
         this.messageSystem = new MessageSystem(plugin);
     }
 
+    /**
+     * Teleports a player to their specified home location after a countdown.
+     * <p>
+     * Adds the player to a teleport queue and starts a countdown with visual and auditory effects. If the player moves during
+     * the countdown, the teleportation is canceled.
+     * </p>
+     *
+     * @param player the {@link Player} to be teleported
+     * @param homeName the name of the home location to teleport to
+     */
     public void teleportPlayer(Player player, String homeName) {
         Location homeLocation = homeSystem.getHome(player, homeName);
         if (homeLocation == null) {
-            player.sendMessage("The home \"" + homeName + "\" does not exist.");
-            messageSystem.sendInfoCommandMessage(player);
+            messageSystem.sendLocalizedMessage(player, "teleport.doesntexist");
             return;
         }
-
         teleportQueue.add(player);
-
         new BukkitRunnable() {
-            int countdown = teleportDelaySeconds;
-
+            int countdown = configUtil.getTeleportDelaySeconds();
             @Override
             public void run() {
                 if (!teleportQueue.contains(player)) {
-                    cancel(); // Player moved, cancel the task
+                    cancel();
                     return;
                 }
-
                 if (countdown > 0) {
-                    // Countdown message and effects
-                    Bukkit.getOnlinePlayers().forEach(p ->
-                            p.sendTitle(player.getName(), "Teleporting in " + countdown + "...", 10, 70, 20));
+                    // Send the countdown as a subtitle to the teleporting player only
+                    player.sendTitle(player.getName(), messageSystem.sendLocalizedTitle("teleport.countdown", countdown), 10, 70, 20);
                     player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
                     player.getWorld().spawnParticle(Particle.PORTAL, player.getLocation(), 30, 0.5, 1, 0.5, 0.1);
-
                     countdown--;
                 } else {
-                    // Teleport the player and apply god mode
                     player.teleport(homeLocation);
-                    player.sendMessage("You have been teleported to your home: " + homeName);
+                    messageSystem.sendLocalizedMessage(player, "teleport.foundhome", homeName);
                     player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
                     player.getWorld().spawnParticle(Particle.END_ROD, player.getLocation(), 50, 0.5, 1, 0.5, 0.1);
-
-                    // Remove blindness and end the task
                     player.removePotionEffect(PotionEffectType.BLINDNESS);
                     teleportQueue.remove(player);
                     cancel();
                 }
             }
-        }.runTaskTimer(plugin, 0, 20); // Run task every 20 ticks (1 second)
-
-        // Start the stand-still check
+        }.runTaskTimer(plugin, 0, 20);
         new BukkitRunnable() {
             @Override
             public void run() {
                 if (!teleportQueue.contains(player)) {
-                    cancel(); // Player moved, cancel the task
+                    cancel();
                     return;
                 }
-
-                // Apply blindness while waiting
-                player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, standStillTimeSeconds * 20, 0, true, false, true));
-
-                // Particle effect and sound
+                player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, configUtil.getStandStillTimeSeconds() * 20, 0, true, false, true));
                 new BukkitRunnable() {
                     @Override
                     public void run() {
@@ -99,19 +109,16 @@ public class TeleportSystem implements Listener {
                             player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1.0f, 1.0f);
                         }
                     }
-                }.runTaskTimer(plugin, 0, 20); // Run every second
-
+                }.runTaskTimer(plugin, 0, 20);
             }
-        }.runTaskLater(plugin, standStillTimeSeconds * 20L); // Start after the stand-still time
-
-        // Register move event listener to cancel teleportation if the player moves
+        }.runTaskLater(plugin, configUtil.getStandStillTimeSeconds() * 20L);
         plugin.getServer().getPluginManager().registerEvents(new Listener() {
             @EventHandler
             public void onPlayerMove(PlayerMoveEvent moveEvent) {
                 if (teleportQueue.contains(moveEvent.getPlayer())) {
                     if (!moveEvent.getFrom().getBlock().equals(moveEvent.getTo().getBlock())) {
                         teleportQueue.remove(moveEvent.getPlayer());
-                        moveEvent.getPlayer().sendMessage("Teleportation canceled due to movement.");
+                        moveEvent.getPlayer().sendMessage(messageSystem.sendLocalizedTitle("teleport.canceled"));
                     }
                 }
             }

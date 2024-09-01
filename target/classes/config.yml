@@ -1,5 +1,5 @@
 # Configuration for SafeHaven plugin
-
+config-version: 1
 # Custom Messages Section
 messages:
   # Prefix settings for the plugin's messages
@@ -8,18 +8,8 @@ messages:
     name: "<gradient:#00FF00:#00CC00>[SafeHaven]</gradient>"
     # Indicates if the prefix should be included in plugin messages
     value: true
-  # Success message format
-  success:
-    format: "<green>Operation completed successfully!</green>"
-  # Missing permission message format
-  missing-permission:
-    format: "<orange>You do not have permission to execute this command.</orange>"
-  # Info command message format
-  info-command:
-    format: "<blue>Use /homeinfo for more details.</blue>"
-  # Error command message format
-  error-command:
-    format: "<red>An error occurred while processing your request.</red>"
+  # Language setting
+  language: en_us  # Default language, can be changed to es_es, etc.
 
 # Home System Settings Section
 home-system:
@@ -43,11 +33,11 @@ storage:
     # MySQL configuration
     mysql:
       # JDBC URL for connecting to MySQL database
-      url: jdbc:mysql://localhost:3306/your_database
+      url: jdbc:mysql://localhost:3306/safehaven_db
       # MySQL username for authentication
-      user: your_username
+      user: safehaven_user
       # MySQL password for authentication
-      password: your_password
+      password: changeme
     # SQLite configuration
     sqlite:
       # File path for the SQLite database file
@@ -55,11 +45,13 @@ storage:
     # MongoDB configuration
     mongodb:
       # Connection string for MongoDB
-      url: mongodb://localhost:27017/your_database
+      url: mongodb://localhost:27017
+      # MongoDB database name
+      name: safehaven_db
       # MongoDB username for authentication (optional)
-      user: your_username
+      user: mongodb_user
       # MongoDB password for authentication (optional)
-      password: your_password
+      password: changeme
 
 # Bedrock Player Configuration Section (Floodgate)
 bedrock-players:
@@ -67,9 +59,7 @@ bedrock-players:
   enabled: true
   # Floodgate-related configuration
   floodgate:
-    # The path to the Floodgate plugin file
-    path: plugins/Floodgate.jar
-    #
+    # Enable GUI system for Bedrock players
     guisystem: true
-    #
+    # Enable menu system for Bedrock players
     menusystem: false

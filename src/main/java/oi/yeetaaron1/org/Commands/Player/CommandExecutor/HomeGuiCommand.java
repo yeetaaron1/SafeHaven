@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class HomeGuiCommand implements CommandExecutor {
 
@@ -14,24 +15,23 @@ public class HomeGuiCommand implements CommandExecutor {
     private final MessageSystem messageSystem;
 
     public HomeGuiCommand(SafeHaven plugin) {
-        this.guiMenu = new HomeMenu();
-        this.messageSystem = new MessageSystem(plugin);
+        this.guiMenu = new HomeMenu(plugin);
+        this.messageSystem = plugin.getMessageSystem();
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (!player.hasPermission("safehaven.gui")) {
-                player.sendMessage("You do not have permission to use this command.");
-                messageSystem.sendMissingPermissionMessage(player);
+                messageSystem.sendLocalizedMessage(player, "command.common.no-permission");
                 return true;
             }
             guiMenu.open(player);
             return true;
         } else {
-            sender.sendMessage("This command can only be used by players.");
-            return false;
+            messageSystem.sendLocalizedMessage(sender, "command.common.player-only");
+            return true;
         }
     }
 }
