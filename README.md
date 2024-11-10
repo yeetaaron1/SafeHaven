@@ -29,6 +29,7 @@ SafeHaven is a customizable home system plugin for Minecraft, designed to offer 
 4. **Configuration System:**
     - **Storage Options**:
         - **MySQL**: Store player home data in a MySQL database.
+        - **Mongodb**: Store player home data in a Mongodb database.
         - **SQLite**: Use an SQLite database for local storage.
         - **YAML Files**: Save each player's home data in individual YAML files.
     - **Configurable Settings**:
@@ -40,57 +41,58 @@ SafeHaven is a customizable home system plugin for Minecraft, designed to offer 
 
 ## Project Plan
 
-### Phase 1: Initial Setup
-- **Repository Setup**: Create a public GitHub repository for version control and community collaboration.
-- **Development Environment**: Prepare your development environment (Java, Maven/Gradle, IDE).
-- **Plugin Structure**: Set up the base structure of the plugin, including package organization, and create the main class. Define the `plugin.yml`.
+### _~~Phase 1: Initial Setup~~_ Task: Finished
+- **_~~Repository Setup~~_**: _~~Create a public GitHub repository for version control and community collaboration.~~_
+- **_~~Development Environment~~_**: _~~Prepare your development environment (Java, Maven, IDE).~~_
+- **_~~Plugin Structure~~_**: _~~Set up the base structure of the plugin, including package organization, and create the main class. Define the `plugin.yml`.~~__
 
 ### Phase 2: Core Functionality
-- **Player Commands Implementation**:
-    - Develop the commands for players (`/sethome`, `/home`, `/homes`, `/delhome`).
-    - Implement basic home management functionality, including saving and retrieving homes.
+- **_~~Player Commands Implementation~~_**: Task: Finished (Mostly Working)
+    - _~~Develop the commands for players (`/sethome`, `/home`, `/homes`, `/delhome`, `/homegui`)._~~
+    - _~~Implement basic home management functionality, including saving and retrieving homes.~~_
 
-- **Admin Commands Implementation**:
-    - Create the admin commands (`/safehaven sethome`, `/safehaven home`, `/safehaven delhome`, `/safehaven list`).
+- **Admin Commands Implementation**: Task: 50/100 (Basic Format)
+    - Create the admin commands (`/safehaven help`,`/safehaven sethome <username>`, `/safehaven home <username>`, `/safehaven delhome <username>`, `/safehaven list <username>`, `/safehaven admingui`).
     - Implement admin functionalities for managing player homes.
 
 ### Phase 3: Storage and Configuration
-- **Storage System**:
-    - Implement the storage system, allowing data to be saved in MySQL, SQLite, or YAML files.
-    - Ensure the plugin can switch between different storage options based on configuration.
+- **_~~Storage System~~_**: Task: Finished (Mostly working, One issue you have to restart the server if you want to change the storage system.)
+    - _~~Implement the storage system, allowing data to be saved in MySQL, SQLite, Mongodb, or YAML files.~~_
+    - _~~Ensure the plugin can switch between different storage options based on configuration.~~_
 
 - **Config System**:
     - Develop the `config.yml` to include settings for home limits, messages, and storage options.
     - Implement customizable messages and limits, allowing server admins to tailor the plugin to their needs.
 
 ### Phase 4: GUI Development
-- **Player GUI**:
-    - Design and implement a GUI menu for players to manage their homes visually.
-    - Add features for setting, deleting, and teleporting to homes via the GUI.
+- **Player GUI**: Task: Mostly Finished (So far it works but players cant set a home in the Gui Menu)
+    - _~~Design and implement a GUI menu for players to manage their homes visually.~~_
+    - Add features for setting, deleting, and teleporting to homes via the GUI. (Setting Isn't working)
 
-- **Admin GUI**:
+- **Admin GUI**: Task: Not Working
     - Create an admin-specific GUI for managing all player homes.
     - Include options for viewing, teleporting, and deleting homes.
 
 ### Phase 5: Testing and Optimization
-- **Beta Testing**:
+- **Beta Testing**: Not Planned Yet
     - Test all features internally and fix any bugs.
     - Release a beta version to gather feedback from a broader audience.
 
-- **Optimization**:
+- **Optimization**: Not Planned Yet
     - Ensure the plugin runs smoothly with different storage options.
     - Optimize for performance, particularly when using databases.
 
 ### Phase 6: Documentation and Release
-- **Documentation**:
+- **Documentation**: Not Planned Yet
     - Write detailed documentation for users, covering installation, configuration, and command usage.
     - Create guides for setting up different storage options.
+    - Add Language Support.
 
-- **Release**:
-    - Publish the plugin on platforms like SpigotMC and GitHub.
+- **Release**: Only Published to Modrinth and GitHub.
+    - Publish the plugin on platforms like SpigotMC, Modrinth and GitHub.
     - Promote the release through forums, Discord communities, and social media.
 
-- **Ongoing Support**:
+- **Ongoing Support**: 
     - Monitor user feedback and respond to issues.
     - Provide regular updates and improvements based on community input.
  

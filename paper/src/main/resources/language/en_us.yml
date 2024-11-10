@@ -1,0 +1,85 @@
+# Common Messages
+command:
+  common:
+    no-permission: "You do not have permission to use this command."
+    unknown-command: "Unknown command. Use /safehaven help for a list of commands."
+    player-only: "This command can only be used by players."
+
+  # Admin Command Messages
+  admin:
+    admingui:
+      usage: "Usage: /safehaven admingui <param>"
+      success: "Admin GUI command executed."
+    sethome:
+      usage: "Usage: /safehaven sethome <home_name> [name]"
+      success: "Home {0} set for player {1}."
+    home:
+      usage: "Usage: /safehaven home <player> [name]"
+      success: "Home command executed for player: {0}, with name: {1}"
+    delhome:
+      usage: "Usage: /safehaven delhome <home_name>"
+      success: "Home {0} has been deleted!"
+    list:
+      usage: "Usage: /safehaven list <player>"
+      success: "List homes command executed for player: {0}"
+  # Player DelHome Command Messages
+  delhome:
+    success: "Home {0} has been deleted!"
+    not-found: "Home {0} not found."
+    no-permission: "You do not have permission to use this command."
+    sender-only: "This command can only be used by players."
+  # Player Home Command Messages
+  home:
+    usage: "Usage: /home [home_name]"
+    no-homes: "You have no homes set."
+    not-found: "Home {0} not found."
+    success: "Teleported to home {0}."
+  # Player Homes Command Messages
+  homes:
+    no-homes: "You have no homes set."
+    list-header: "Your homes:"
+    list-item: "- {0}"
+  # Player SetHome Command Messages
+  sethome:
+    usage: "Usage: /sethome [home_name]"
+    max-homes: "You have reached the maximum number of homes ({0})."
+    success: "Home {0} has been set!"
+
+# Player Event Messages
+event:
+  # Player Death Event Messages
+  death:
+    teleport-success: "You have been teleported to your home: {0}"
+    no-home-found: "No home found to teleport to after death."
+
+# GUI Menu System Messages
+gui:
+  guisystem:
+    sethome:
+      nameprompt: "Name your home now!"
+    home:
+      deleted: "Home {0} has been deleted."
+  # GUI Titles
+  home:
+    menu: "Home Menu"
+  sethome:
+    menu: "Set Home Menu"
+    click: "Click to Name Home"
+    back: "Go Back"
+  listofhomes:
+    menu: "List of Homes"
+    back: "Go Back"
+  deletehome:
+    menu: "Delete Home Menu"
+    back: "Go Back"
+  confirmdeletehome:
+    menu: "Confirm Delete Home"
+    confirm: "Confirm Delete"
+    cancel: "Cancel Delete"
+# Teleport System Messages
+teleport:
+  doesntexit: "The home {0} does not exit."
+  countdown: "Teleporting in {0} ..."
+  foundhome: "You have been teleported to your home: {0}"
+  canceled: "Teleport canceled due to movement."
+

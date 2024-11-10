@@ -6,7 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="SafeHaven" />
+        <module name="paper" />
+        <module name="SafeHaven-Paper" />
+        <module name="SafeHaven-Fabric" />
       </profile>
     </annotationProcessing>
   </component>
