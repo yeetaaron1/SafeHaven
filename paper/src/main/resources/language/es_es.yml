@@ -65,13 +65,13 @@ gui:
   sethome:
     menu: "Menú de Establecer Casa"
     click: "Haz clic para nombrar la casa"
-    back: "Volver"
+    back: "Regresar" #wrong word
   listofhomes:
     menu: "Lista de Casas"
-    back: "Volver"
+    back: "Regresar" #wrong word
   deletehome:
     menu: "Menú de Eliminar Casa"
-    back: "Volver"
+    back: "Regresar" #wrong word
   confirmdeletehome:
     menu: "Confirmar Eliminación de Casa"
     confirm: "Confirmar Eliminación"

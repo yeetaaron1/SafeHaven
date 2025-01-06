@@ -5,11 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>oi.yeetaaron1</groupId>
     <artifactId>SafeHaven</artifactId>
-    <version>0.08-ALPHA</version>
+    <version>0.10-ALPHA</version>
     <packaging>pom</packaging>
     <modules>
         <module>paper</module>
-        <module>fabric</module>
     </modules>
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

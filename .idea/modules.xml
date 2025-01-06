@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SafeHaven.iml" filepath="$PROJECT_DIR$/SafeHaven.iml" />
-      <module fileurl="file://$PROJECT_DIR$/fabric/SafeHaven-Fabric.iml" filepath="$PROJECT_DIR$/fabric/SafeHaven-Fabric.iml" />
       <module fileurl="file://$PROJECT_DIR$/paper/SafeHaven-Paper.iml" filepath="$PROJECT_DIR$/paper/SafeHaven-Paper.iml" />
       <module fileurl="file://$PROJECT_DIR$/paper/paper.iml" filepath="$PROJECT_DIR$/paper/paper.iml" />
     </modules>

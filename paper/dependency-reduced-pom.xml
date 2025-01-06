@@ -3,7 +3,7 @@
   <parent>
     <artifactId>SafeHaven</artifactId>
     <groupId>oi.yeetaaron1</groupId>
-    <version>0.08-ALPHA</version>
+    <version>0.10-ALPHA</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>SafeHaven-Paper</artifactId>
@@ -37,6 +37,23 @@
             <goals>
               <goal>shade</goal>
             </goals>
+            <configuration>
+              <artifactSet>
+                <excludes>
+                  <exclude>io.papermc.paper:paper-api</exclude>
+                </excludes>
+              </artifactSet>
+              <relocations>
+                <relocation>
+                  <pattern>org.mongodb</pattern>
+                  <shadedPattern>oi.yeetaaron1.shaded.mongodb</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.bstats</pattern>
+                  <shadedPattern>oi.yeetaaron1.shaded.bstats</shadedPattern>
+                </relocation>
+              </relocations>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -64,7 +81,7 @@
     <dependency>
       <groupId>io.papermc.paper</groupId>
       <artifactId>paper-api</artifactId>
-      <version>1.21.3-R0.1-SNAPSHOT</version>
+      <version>1.21.4-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>

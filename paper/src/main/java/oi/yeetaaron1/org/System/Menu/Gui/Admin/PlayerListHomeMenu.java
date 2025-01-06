@@ -10,25 +10,24 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class PlayerListMenu implements GuiMenu {
+public class PlayerListHomeMenu implements GuiMenu {
 
     private final SafeHaven plugin;
     private final HomeSystem homeSystem;
-    private int page = 0;
+    private final Player targetPlayer;
 
-    public PlayerListMenu(SafeHaven plugin, HomeSystem homeSystem) {
+    public PlayerListHomeMenu(SafeHaven plugin, HomeSystem homeSystem, Player targetPlayer) {
         this.plugin = plugin;
         this.homeSystem = homeSystem;
+        this.targetPlayer = targetPlayer;
     }
 
     @Override
     public void open(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, 54, ChatColor.GREEN + "Player List Gui");
+        Inventory inventory = Bukkit.createInventory(null, 54, ChatColor.GREEN + targetPlayer.getName() + "'s Homes");
 
         // Set border
         ItemStack glassPanel = createMenuItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, " ");
@@ -48,24 +47,5 @@ public class PlayerListMenu implements GuiMenu {
             item.setItemMeta(meta);
         }
         return item;
-    }
-
-    private ItemStack createPlayerHead(Player player) {
-        ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta meta = (SkullMeta) playerHead.getItemMeta();
-        if (meta != null) {
-            meta.setOwningPlayer(player);
-            meta.setDisplayName(ChatColor.YELLOW + player.getName());
-            playerHead.setItemMeta(meta);
-        }
-        return playerHead;
-    }
-
-    public void nextPage() {
-        page++;
-    }
-
-    public void previousPage() {
-        if (page > 0) page--;
     }
 }

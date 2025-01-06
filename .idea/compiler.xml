@@ -8,8 +8,10 @@
         <outputRelativeToContentRoot value="true" />
         <module name="paper" />
         <module name="SafeHaven-Paper" />
-        <module name="SafeHaven-Fabric" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="SafeHaven-Fabric" target="21" />
+    </bytecodeTargetLevel>
   </component>
 </project>

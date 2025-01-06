@@ -7,6 +7,7 @@ oi\yeetaaron1\org\Commands\Admin\CommandExecutor\SafeHavenCommand.class
 oi\yeetaaron1\org\System\Server\Storage\HomeStorage.class
 oi\yeetaaron1\org\System\Server\Storage\MongoDBHomeStorage.class
 oi\yeetaaron1\org\SafeHaven.class
+oi\yeetaaron1\org\System\Menu\Gui\Admin\PlayerListHomeMenu.class
 oi\yeetaaron1\org\System\Server\HomeSystem.class
 oi\yeetaaron1\org\System\Menu\Gui\Player\DelHomeMenu.class
 oi\yeetaaron1\org\Listener\Server\BedEvent.class
@@ -20,6 +21,7 @@ oi\yeetaaron1\org\System\Menu\Gui\Admin\PlayerListMenu.class
 oi\yeetaaron1\org\System\Server\Storage\MySQLHomeStorage.class
 oi\yeetaaron1\org\System\Menu\GuiAdminSystem.class
 oi\yeetaaron1\org\Utils\DatabaseUtil.class
+oi\yeetaaron1\org\Utils\NewUpdateUtil.class
 oi\yeetaaron1\org\Commands\Player\TabCompleter\SetHomeCompleter.class
 oi\yeetaaron1\org\System\Server\TeleportSystem$3.class
 oi\yeetaaron1\org\Managers\EventManager.class
@@ -32,6 +34,7 @@ oi\yeetaaron1\org\System\Server\TeleportSystem.class
 oi\yeetaaron1\org\System\Menu\Gui\Player\ConfirmDeleteHomeMenu$ConfirmDeleteInventoryHolder.class
 oi\yeetaaron1\org\System\Menu\Gui\Player\HomeMenu.class
 oi\yeetaaron1\org\System\Menu\GuiPlayerSystem.class
+oi\yeetaaron1\org\Utils\BstatsUtil.class
 oi\yeetaaron1\org\Commands\Player\CommandExecutor\SetHomeCommand.class
 oi\yeetaaron1\org\Commands\Admin\TabCompleter\SafeHavenCompleter.class
 oi\yeetaaron1\org\Managers\CommandManager.class
